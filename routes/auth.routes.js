@@ -8,6 +8,9 @@ var bcrypt = require('bcryptjs');
 const UserModel = require('../models/User.model');
 const { response } = require('express');
 
+
+//-------------------------------------------------------
+
 router.post('/signup', (req, res) => {
   const {username, email, password} = req,body;
 
@@ -58,6 +61,7 @@ router.post('/signup', (req, res) => {
       })    
 });
 
+//-------------------------------------------------------
 //LOGIN
 router.post('/login', (req,res) => {
   const {email, password} = req.body;
@@ -71,11 +75,12 @@ router.post('/login', (req,res) => {
   const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
     if (!myRegex.test(email)) {
         res.status(500).json({
-            error: 'Email format not correct 🚫',
+            error: 'Email format not correct 😟',
         })
         return;  
     }
-    
+
+//-------------------------------------------------------
 
     UserModel.findOne({email})
     .then((userData) => {
@@ -91,21 +96,43 @@ router.post('/login', (req,res) => {
                 //if passwords do not match
                 else {
                     res.status(500).json({
-                        error: 'Password don\'t match 🤔',
+                        error: 'Incorrect password 🤔',
                     })
                   return; 
                 }
+            })
+            .catch(() => {
+              res.status(500).json({
+                error: 'Email format not correct 😐',
+              })
+              return; 
+            });
     })
-    .catch(() => {
+    .catch((err) => {
       res.status(500).json({
-        error: 'Email format not correct 😐',
+        error: 'Email does not exist 😟',
+        message: err
       })
-      return; 
-    });
-
+      return;
     })
 })
 
+//-------------------------------------------------------
+
+router.post('/logout', (req, res, next) => {
+  if(req.session.loggedInUser){
+    next()
+  }
+  else{
+    res.status(401).json({
+      message: 'Unauthorized user 🚫'
+    })
+  }
+})
+
+router.get('/user', isLoggedIn, (req, res, next) => {
+  res.status(200).json(req.session.loggedInUser)
+})
 
 module.exports = router;
 
