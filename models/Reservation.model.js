@@ -13,7 +13,12 @@ let ReservationSchema = new Schema ({
     type: Number,
     required: true
   },
-  description: String
+  description: String,
+
+  myUserId: {
+    type: Schema.Types.ObjectId, 
+    ref: 'user'
+  }
 })
 
 let ReservationModel = model('reservation', ReservationSchema)

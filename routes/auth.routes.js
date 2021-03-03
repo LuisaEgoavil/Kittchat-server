@@ -6,13 +6,13 @@ var bcrypt = require('bcryptjs');
 
 //MODEL GOES HERE
 const UserModel = require('../models/User.model');
-const { response } = require('express');
+//const { response } = require('express');
 
 
 //-------------------------------------------------------
 
 router.post('/signup', (req, res) => {
-  const {username, email, password} = req,body;
+  const {username, email, password} = req.body;
 
   if(!username ||  !email || !password){
     res.status(500)
@@ -48,13 +48,13 @@ router.post('/signup', (req, res) => {
       .catch((err) => {
         if (err.code === 11000) {
           res.status(500).json({
-            errorMessage: 'username or email entered already exists!',
+            errorMessage: 'Username or email entered already exists!',
             message: err,
           });
         } 
         else {
           res.status(500).json({
-            errorMessage: 'Something went wrong! Go to sleep!',
+            errorMessage: 'Something went wrong! ❌',
             message: err,
           });
         }
@@ -110,7 +110,7 @@ router.post('/login', (req,res) => {
     })
     .catch((err) => {
       res.status(500).json({
-        error: 'Email does not exist 😟',
+        error: 'This email does not exist 😟',
         message: err
       })
       return;
@@ -119,18 +119,30 @@ router.post('/login', (req,res) => {
 
 //-------------------------------------------------------
 
-router.post('/logout', (req, res, next) => {
-  if(req.session.loggedInUser){
+router.post('/logout', (req, res,next) => {
+  if(req.session){
+    req.session.destroy();
+    res.status(204).json({});
+  } else {
     next()
   }
-  else{
+  
+})
+//-------------------------------------------------------
+
+const isLoggedIn = (req, res, next) => {
+  if(req.session.loggedInUser){
+    next()
+  } 
+  else {
     res.status(401).json({
-      message: 'Unauthorized user 🚫'
+      message: 'Unauthorized user 🚫',
+      code: 401,
     })
   }
-})
+}
 
-router.get('/user', isLoggedIn, (req, res, next) => {
+router.get('/user', isLoggedIn, (req,res) => {
   res.status(200).json(req.session.loggedInUser)
 })
 
