@@ -33,14 +33,5 @@ router.post('/create', (req, res) => {
 
 })
 
-//store the information in the DB
-
-
-//USER
-
-//DATE
-//TIME
-//DESCRIPTION
-
 
 module.exports = router
