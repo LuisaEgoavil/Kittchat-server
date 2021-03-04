@@ -6,7 +6,7 @@ var bcrypt = require('bcryptjs');
 
 //MODEL GOES HERE
 const UserModel = require('../models/User.model');
-//const { response } = require('express');
+
 
 
 //-------------------------------------------------------
@@ -67,31 +67,34 @@ router.post('/signup', (req, res) => {
 //LOGIN
 router.post('/login', (req,res) => {
   const {email, password} = req.body;
-
+console.log(password, email)
   if(!email || !password){
     res.status(500).json({
       error:'Please enter your email 📧 and password 🔑'
     })
     return;
   }
-  const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
-    if (!myRegex.test(email)) {
-        res.status(500).json({
-            error: 'Email format not correct 😟',
-        })
-        return;  
-    }
+  // const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
+  //   if (!myRegex.test(email)) {
+  //       res.status(500).json({
+  //           error: 'Email format not correct 😟',
+  //       })
+  //       return;  
+  // }
 
-//-------------------------------------------------------
+//------------------------CHECKING LOGIN-------------------------------
 
-    UserModel.findOne({email})
+    UserModel.findOne({email: email})
     .then((userData) => {
+      console.log(userData)
       bcrypt.compare(password, userData.passwordHash)
             .then((doesItMatch) => {
+              console.log(doesItMatch)
                 //if it matches
                 if (doesItMatch) {
                   // req.session is the special object that is available to you
                   userData.passwordHash = "***";
+                  console.log(res.session)
                   req.session.loggedInUser = userData;
                   res.status(200).json(userData)
                 }
