@@ -2,6 +2,18 @@ const express = require('express')
 const router = express.Router()
 const ReservationModel = require('../models/Reservation.model')
 
+router.get('/reservation' , (req, res) => {
+  ReservationModel.find()
+    .then((reservation) => {
+      res.status(200).json(reservation)
+    })
+    .catch(() => {
+      res.status(500).json({
+        error: 'Something went wrong',
+        message: err
+      })
+    })
+})
 
 router.post('/create', (req, res) => {
   const {username, time, date, description} = req.body;
@@ -30,7 +42,34 @@ router.post('/create', (req, res) => {
       message: err
     })
   })
+})
 
+router.get('/reservation/reservationId', (req, res) => {
+  ReservationModel.findById(req.params.reservationId)
+    .then((response) => {
+        res.status(200).json(response)
+    })
+    .catch((err) => {
+        res.status(500).json({
+          error:'Something went wrong',
+          message: err
+        })
+    })
+})
+
+router.patch('/reservation/:id', (req, res) => {
+  let id = req.params.id
+  const{username, time, date, description} = req.body
+  ReservationModel.findByIdAndUpdtate(id, {$set: {usernama: username, time:time, date: date, description: description}})
+      .then((response) => {
+            res.status(200).json(response)
+      })
+      .catch((err) => {
+            res.status(500).json({
+              error: "something went wrong",
+              message: err
+            })
+      })
 })
 
 
