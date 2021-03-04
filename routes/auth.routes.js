@@ -12,6 +12,7 @@ const UserModel = require('../models/User.model');
 //-------------------------------------------------------
 
 router.post('/signup', (req, res) => {
+  console.log(req.body)
   const {username, email, password} = req.body;
 
   if(!username ||  !email || !password){
@@ -39,7 +40,8 @@ router.post('/signup', (req, res) => {
     //CREATING A SALT
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(password, salt);
-    UserModel.create({name: username, email, passwordHash: hash})
+    console.log('correct')
+    UserModel.create({username: username, email, passwordHash: hash})
       .then((user) => {
         // ensuring that we don't share the hash as well with the user
         user.passwordHash = "***";
