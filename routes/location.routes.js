@@ -4,17 +4,10 @@ const LocationModel = require("../models/Location.model.js")
 
 
 //---------- Get route that will list all ou the locations----------//
-router.get("/contact", (req, res, next) => {
+router.get("/location", (req, res, next) => {
   LocationModel.find()
-  .then((location) => res.status(200).json(user))
+  .then((locations) => res.status(200).json(locations))
   .catch((err) => console.log(err));
 });
-
-
-
-
-
-
-
 
 module.exports = router;
