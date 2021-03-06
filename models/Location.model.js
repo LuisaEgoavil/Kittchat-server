@@ -4,7 +4,7 @@ let LocationSchema = new Schema({
   cafeName: String,
   address: String,
   hours: String,
-  phoneNumber: Number,
+  phoneNumber: String,
   email: String,
   coordinates: String
 })
