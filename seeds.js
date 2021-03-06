@@ -4,11 +4,11 @@ const LocationModel = require("./models/Location.model.js")
 
 // locations to be added
 let locations = [
-  { cafeName: "locationA", address: "Germany", hours: "11:00-18:00", phoneNumber: 1111111, email: "aaa@aaa.com"},
-  { cafeName: "locationB", address: "Spain", hours: "11:00-19:00", phoneNumber: 2222222, email: "bbb@aaa.com"},
-  { cafeName: "locationC", address: "England", hours: "11:00-20:00", phoneNumber: 3333333, email: "ccc@aaa.com"},
-  { cafeName: "locationD", address: "Finland", hours: "11:00-21:00", phoneNumber: 4444444, email: "ddd@aaa.com"},
-  { cafeName: "locationE", address: "France", hours: "11:00-22:00", phoneNumber: 5555555, email: "eee@aaa.com"}
+  { cafeName: "Kittchat", address: "Manteuffelstraße 20, 12103 Berlin", hours: "11:00-19:00", phoneNumber: 017695853433, email: "kittchatcafe@gmail.com"},
+  { cafeName: "Kittchat", address: "Otto-Suhr-Allee 12, 10585 Berlin", hours: "11:30-19:00", phoneNumber: 056195015988, email: "kittchatcafe@gmail.com"},
+  { cafeName: "Kittchat", address: "Paul-Lincke-Ufer 25A, 10999 Berlin", hours: "11:00-20:00", phoneNumber: 051598952555, email: "kittchatcafe@gmail.com"},
+  { cafeName: "Kittchat", address: "Leykestraße 8A, 12053 Berlin", hours: "12:00-19:30", phoneNumber: 017691442255, email: "kittchatcafe@gmail.com"},
+  { cafeName: "Kittchat", address: "Marienburger Straße 27, 10405 Berlin", hours: "11:00-20:00", phoneNumber: 015962582122, email: "kittchatcafe@gmail.com"}
 ]
 
 //to add an array of several elemnts to DB
