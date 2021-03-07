@@ -50,7 +50,7 @@ const locationRoutes = require('./routes/location.routes')
 app.use("/api", locationRoutes)
 
 const reservationRoutes = require('./routes/reservation.routes')
-app.use("/api/reservation", reservationRoutes)
+app.use("/api", reservationRoutes)
 
 
 

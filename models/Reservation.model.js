@@ -6,19 +6,17 @@ let ReservationSchema = new Schema ({
     required: true
   },
   time: {
-    type: Number,
+    type: String,
     required: true
   },
   date: {
-    type: Number,
+    type: String,
     required: true
   },
-  description: String,
 
-  myUserId: {
-    type: Schema.Types.ObjectId, 
-    ref: 'user'
-  }
+  reservationName: String,
+
+  description: String,
 })
 
 let ReservationModel = model('reservation', ReservationSchema)

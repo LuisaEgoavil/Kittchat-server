@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 const ReservationModel = require('../models/Reservation.model')
 
-router.get('/reservation' , (req, res) => {
+router.get('/reservations' , (req, res) => {
   ReservationModel.find()
-    .then((reservation) => {
-      res.status(200).json(reservation)
+    .then((reservations) => {
+      res.status(200).json(reservations)
     })
     .catch(() => {
       res.status(500).json({
@@ -15,25 +15,29 @@ router.get('/reservation' , (req, res) => {
     })
 })
 
-router.post('/create', (req, res) => {
-  const {username, time, date, description} = req.body;
-  console.log(req.body)
+router.post('/booking', (req, res) => {
+  const {locationName, time, date, reservationName, description} = req.body;
+  //console.log(req.body)
 
   //to check that all of the fields are complete
-  if(!username || !time || !date) {
-    //is it 404 or 400?
+  if(!locationName || !time || !date || !reservationName) {
+    console.log('something here')
+
     return res.status(400).json({
-      message: 'Name, time & date are required! '
+      message: 'Location, name, time & date are required!'
     })
   }
 
   ReservationModel.create({
-    username: username,
+    locationName: locationName, 
     time: time,
     date: date,
-    description: description
+    reservationName: reservationName,
+    description: description,
+    
   })
   .then((response) => {
+    console.log(response, "checking here")
     res.status(200).json(response)
   })
   .catch((err) => {
@@ -44,7 +48,7 @@ router.post('/create', (req, res) => {
   })
 })
 
-router.get('/reservation/reservationId', (req, res) => {
+router.get('/reservations/:reservationId', (req, res) => {
   ReservationModel.findById(req.params.reservationId)
     .then((response) => {
         res.status(200).json(response)
@@ -57,10 +61,25 @@ router.get('/reservation/reservationId', (req, res) => {
     })
 })
 
-router.patch('/reservation/:id', (req, res) => {
+router.delete('/reservations/:id', (req,res) => {
+  ReservationModel.findByIdAndDelete(req.params.id)
+    .then((response) => {
+      res.status(200).json(response)
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: 'something went wrong',
+        message: err
+      })
+    })
+})
+
+
+
+router.patch('/reservations/:id', (req, res) => {
   let id = req.params.id
-  const{username, time, date, description} = req.body
-  ReservationModel.findByIdAndUpdtate(id, {$set: {usernama: username, time:time, date: date, description: description}})
+  const{locationName, time, date, reservationName, description} = req.body
+  ReservationModel.findByIdAndUpdtate(id, {$set: {locationName:locationName, time:time, date:date, reservationName:reservationName, description:description, completed: completed}})
       .then((response) => {
             res.status(200).json(response)
       })
