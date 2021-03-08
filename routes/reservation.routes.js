@@ -48,8 +48,8 @@ router.post('/booking', (req, res) => {
   })
 })
 
-router.get('/reservations/:reservationId', (req, res) => {
-  ReservationModel.findById(req.params.reservationId)
+router.get('/booking/:id', (req, res) => {
+  ReservationModel.findById(req.params.id)
     .then((response) => {
         res.status(200).json(response)
     })
