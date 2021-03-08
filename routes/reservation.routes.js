@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const ReservationModel = require('../models/Reservation.model')
 
-router.get('/reservations' , (req, res) => {
+router.get('/profile' , (req, res) => {
   ReservationModel.find()
     .then((reservations) => {
       res.status(200).json(reservations)
