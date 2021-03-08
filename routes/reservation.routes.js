@@ -51,6 +51,7 @@ router.post('/booking', (req, res) => {
 router.get('/booking/:id', (req, res) => {
   ReservationModel.findById(req.params.id)
     .then((response) => {
+      console.log(response)
         res.status(200).json(response)
     })
     .catch((err) => {
@@ -61,7 +62,7 @@ router.get('/booking/:id', (req, res) => {
     })
 })
 
-router.delete('/reservations/:id', (req,res) => {
+router.delete('/bookinglist/:id', (req,res) => {
   ReservationModel.findByIdAndDelete(req.params.id)
     .then((response) => {
       res.status(200).json(response)
