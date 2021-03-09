@@ -3,6 +3,8 @@ const router = express.Router()
 const ReservationModel = require('../models/Reservation.model')
 
 router.get('/profile' , (req, res) => {
+
+  
   ReservationModel.find()
     .then((reservations) => {
       res.status(200).json(reservations)
