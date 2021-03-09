@@ -18,7 +18,7 @@ router.get('/profile' , (req, res) => {
 
 router.post('/booking', (req, res) => {
   const {locationName, time, date, reservationName, description} = req.body;
-  //console.log(req.body)
+  console.log(req.body)
 
   //to check that all of the fields are complete
   if(!locationName || !time || !date || !reservationName) {
@@ -78,8 +78,6 @@ router.delete('/bookinglist/:id', (req,res) => {
       })
     })
 })
-
-
 
 router.patch('/reservations/:id', (req, res) => {
   let id = req.params.id

@@ -44,6 +44,7 @@ router.post('/signup', (req, res) => {
     UserModel.create({username: username, email, passwordHash: hash})
       .then((user) => {
         // ensuring that we don't share the hash as well with the user
+        
         user.passwordHash = "***";
         res.status(200).json(user);
       })
