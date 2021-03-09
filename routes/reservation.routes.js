@@ -44,8 +44,6 @@ router.post('/booking', (req, res) => {
   // how can I look in the location collection to see their ids?
   // we need to access the DB to get location id
 
-
-
 LocationModel.find({cafeName: locationName})
   .then((response) => {
     console.log(response)
@@ -74,8 +72,6 @@ LocationModel.find({cafeName: locationName})
       })
 
   })
-
-
   // let locationDetails = req.session.
   // console.log(rew.session.location)
 
