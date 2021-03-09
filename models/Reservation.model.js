@@ -2,7 +2,7 @@ const {Schema, model} = require("mongoose");
 
 let ReservationSchema = new Schema ({
   locationName: {
-    type: String,
+    type: Schema.Types.ObjectId, ref: "location",
     required: true
   },
   time: {
