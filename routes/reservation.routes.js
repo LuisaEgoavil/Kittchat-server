@@ -4,7 +4,6 @@ const ReservationModel = require('../models/Reservation.model')
 
 router.get('/profile' , (req, res) => {
 
-  
   ReservationModel.find()
     .then((reservations) => {
       res.status(200).json(reservations)
@@ -29,6 +28,9 @@ router.post('/booking', (req, res) => {
       message: 'Location, name, time & date are required!'
     })
   }
+  
+  console.log(req.session)
+  let userId = req.session.loggedInUser._id
 
   ReservationModel.create({
     locationName: locationName, 
@@ -36,7 +38,7 @@ router.post('/booking', (req, res) => {
     date: date,
     reservationName: reservationName,
     description: description,
-    
+    user: userId
   })
   .then((response) => {
     console.log(response, "checking here")
