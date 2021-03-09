@@ -45,6 +45,7 @@ router.post('/signup', (req, res) => {
       .then((user) => {
         // ensuring that we don't share the hash as well with the user
         user.passwordHash = "***";
+        req.session.loggedInUser = user;
         res.status(200).json(user);
       })
       .catch((err) => {

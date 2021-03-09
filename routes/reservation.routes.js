@@ -4,8 +4,11 @@ const ReservationModel = require('../models/Reservation.model')
 
 router.get('/profile' , (req, res) => {
 
+  let userId = req.session.loggedInUser._id
 
-  ReservationModel.find()
+  ReservationModel.find({
+    user: userId
+  })
     .then((reservations) => {
       res.status(200).json(reservations)
     })
