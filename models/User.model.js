@@ -13,7 +13,8 @@ const UserSchema = new Schema({
   passwordHash: {
     type: String, 
     required: true
-  }
+  },
+
 });
 
 const UserModel = model("user", UserSchema);

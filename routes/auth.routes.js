@@ -76,13 +76,6 @@ console.log(password, email)
     })
     return;
   }
-  // const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
-  //   if (!myRegex.test(email)) {
-  //       res.status(500).json({
-  //           error: 'Email format not correct 😟',
-  //       })
-  //       return;  
-  // }
 
 //------------------------CHECKING LOGIN-------------------------------
 
@@ -152,6 +145,7 @@ const isLoggedIn = (req, res, next) => {
 router.get('/user', isLoggedIn, (req,res) => {
   res.status(200).json(req.session.loggedInUser)
 })
+
 
 module.exports = router;
 

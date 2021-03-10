@@ -15,7 +15,7 @@ router.get('/profile' , (req, res) => {
       console.log(reservations)
       res.status(200).json(reservations)
     })
-    .catch(() => {
+    .catch((err) => {
       res.status(500).json({
         error: 'Something went wrong',
         message: err
