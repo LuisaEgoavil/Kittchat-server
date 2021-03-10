@@ -6,22 +6,59 @@ const ReservationModel = require('../models/Reservation.model')
 router.get('/profile' , (req, res) => {
 
   let userId = req.session.loggedInUser._id
-
-  ReservationModel.find({
-    user: userId
+  let admin = req.session.loggedInUser._id.admin
+if(userId == admin) {
+  ReservationModel.find()
+  .then((reservations) => {
+    res.status(200).json(reservations)
   })
-    .populate("locationName")
-    .then((reservations) => {
-      console.log(reservations)
-      res.status(200).json(reservations)
-    })
-    .catch((err) => {
-      res.status(500).json({
+  .catch((err) => {
+    res.status(500).json({
         error: 'Something went wrong',
         message: err
-      })
     })
+  })
+
+} else {
+  ReservationModel.find({
+      user: userId
+    })
+      .populate("locationName")
+      .then((reservations) => {
+        console.log(reservations)
+        res.status(200).json(reservations)
+      })
+      .catch((err) => {
+        res.status(500).json({
+          error: 'Something went wrong',
+          message: err
+        })
+      }) 
+
+}
+
 })
+
+  // check if the user is an admin
+  // if admin. find ALL reservations and send them
+  // if not admin. send onlz reservations from user. code below
+  
+    // ReservationModel.find({
+    //   user: userId
+    // })
+    //   .populate("locationName")
+    //   .then((reservations) => {
+    //     console.log(reservations)
+    //     res.status(200).json(reservations)
+    //   })
+    //   .catch((err) => {
+    //     res.status(500).json({
+    //       error: 'Something went wrong',
+    //       message: err
+    //     })
+    //   }) 
+
+
 
 router.post('/booking', (req, res) => {
   const {locationName, time, date, reservationName, description} = req.body;
