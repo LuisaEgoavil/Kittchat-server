@@ -46,6 +46,7 @@ router.post('/signup', (req, res) => {
         // ensuring that we don't share the hash as well with the user
         
         user.passwordHash = "***";
+        req.session.loggedInUser = user;
         res.status(200).json(user);
       })
       .catch((err) => {
@@ -75,13 +76,6 @@ console.log(password, email)
     })
     return;
   }
-  // const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
-  //   if (!myRegex.test(email)) {
-  //       res.status(500).json({
-  //           error: 'Email format not correct 😟',
-  //       })
-  //       return;  
-  // }
 
 //------------------------CHECKING LOGIN-------------------------------
 
@@ -150,6 +144,11 @@ const isLoggedIn = (req, res, next) => {
 
 router.get('/user', isLoggedIn, (req,res) => {
   res.status(200).json(req.session.loggedInUser)
+})
+
+router.post('/admin', (req,res) => {
+  
+  
 })
 
 module.exports = router;

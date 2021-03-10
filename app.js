@@ -39,6 +39,7 @@ app.use(session({
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // 👇 Start handling routes here
 // Contrary to the views version, all routes are controled from the routes/index.js
 

@@ -13,6 +13,9 @@ const UserSchema = new Schema({
   passwordHash: {
     type: String, 
     required: true
+  },
+  admin: {
+    type: Boolean
   }
 });
 
