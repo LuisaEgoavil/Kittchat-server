@@ -7,6 +7,7 @@ router.get('/profile' , (req, res) => {
 
   let userId = req.session.loggedInUser._id
   let admin = req.session.loggedInUser._id.admin
+
 if(userId == admin) {
   ReservationModel.find()
   .then((reservations) => {
@@ -143,7 +144,7 @@ router.delete('/bookinglist/:id', (req,res) => {
     })
 })
 
-router.patch('/reservations/:id', (req, res) => {
+router.patch('/profile/:id', (req, res) => {
   let id = req.params.id
   const{locationName, time, date, reservationName, description} = req.body
   ReservationModel.findByIdAndUpdtate(id, {$set: {locationName:locationName, time:time, date:date, reservationName:reservationName, description:description, completed: completed}})
