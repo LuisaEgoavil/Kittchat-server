@@ -4,18 +4,17 @@ const router = express.Router()
 const ReservationModel = require('../models/Reservation.model')
 
 router.get('/profile' , (req, res) => {
-  // check if the user is an admin
-  // if admin. find ALL reservations and send them
-  // if not admin. send onlz reservations from user. code below
 
   let userId = req.session.loggedInUser._id
-  let admin = req.session.loggedInUser.admin
+  let adminId = req.session.loggedInUser.admin
 
-  // does the user have a isOwner: true attribute?. You can check this in req.session.loggedInUser
-  if(admin) {
+  if(adminId) {
     ReservationModel.find()
     .populate("locationName")
+    .populate("user")
     .then((reservations) => {
+      console.log(reservations)
+      // as good practices you should remove the passwordHash from the user before sending it. This is done with a map/forEach
       res.status(200).json(reservations)
     })
     .catch((err) => {
