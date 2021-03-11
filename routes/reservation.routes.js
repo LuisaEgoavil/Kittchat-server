@@ -55,7 +55,6 @@ router.post('/booking', (req, res) => {
     })
   }
   
-  console.log(req.session)
   let userId = req.session.loggedInUser._id
 
   LocationModel.find({cafeName: locationName})
