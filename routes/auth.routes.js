@@ -143,7 +143,7 @@ const isLoggedIn = (req, res, next) => {
 }
 
 router.get('/user', isLoggedIn, (req,res) => {
-  res.status(200).json(req.session.loggedInUser)
+  res.status(200).json()
 })
 
 router.post('/admin', (req,res) => {

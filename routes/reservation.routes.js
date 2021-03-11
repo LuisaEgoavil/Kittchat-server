@@ -6,21 +6,26 @@ const ReservationModel = require('../models/Reservation.model')
 router.get('/profile' , (req, res) => {
 
   let userId = req.session.loggedInUser._id
-  let admin = req.session.loggedInUser._id.admin
-if(userId == admin) {
-  ReservationModel.find()
-  .then((reservations) => {
-    res.status(200).json(reservations)
-  })
-  .catch((err) => {
-    res.status(500).json({
-        error: 'Something went wrong',
-        message: err
-    })
-  })
+  let adminId = req.session.loggedInUser.admin
 
-} else {
-  ReservationModel.find({
+  if(adminId) {
+    ReservationModel.find()
+    .populate("locationName")
+    .populate("user")
+    .then((reservations) => {
+      console.log(reservations)
+      // as good practices you should remove the passwordHash from the user before sending it. This is done with a map/forEach
+      res.status(200).json(reservations)
+    })
+    .catch((err) => {
+      res.status(500).json({
+          error: 'Something went wrong',
+          message: err
+      })
+    })
+
+  } else {
+    ReservationModel.find({
       user: userId
     })
       .populate("locationName")
@@ -30,35 +35,12 @@ if(userId == admin) {
       })
       .catch((err) => {
         res.status(500).json({
-          error: 'Something went wrong',
-          message: err
+        error: 'Something went wrong',
+        message: err
         })
       }) 
-
-}
-
+  }
 })
-
-  // check if the user is an admin
-  // if admin. find ALL reservations and send them
-  // if not admin. send onlz reservations from user. code below
-  
-    // ReservationModel.find({
-    //   user: userId
-    // })
-    //   .populate("locationName")
-    //   .then((reservations) => {
-    //     console.log(reservations)
-    //     res.status(200).json(reservations)
-    //   })
-    //   .catch((err) => {
-    //     res.status(500).json({
-    //       error: 'Something went wrong',
-    //       message: err
-    //     })
-    //   }) 
-
-
 
 router.post('/booking', (req, res) => {
   const {locationName, time, date, reservationName, description} = req.body;
@@ -73,46 +55,35 @@ router.post('/booking', (req, res) => {
     })
   }
   
-  console.log(req.session)
   let userId = req.session.loggedInUser._id
 
-  // here we will find the id of the location by its name
-  // I have the location name
-  // how can I look in the location collection to see their ids?
-  // we need to access the DB to get location id
+  LocationModel.find({cafeName: locationName})
+    .then((response) => {
+      console.log(response)
+      // response will hold the location object with the id
+        let locationId = response[0]._id
 
-LocationModel.find({cafeName: locationName})
-  .then((response) => {
-    console.log(response)
-    // response will hold the location object with the id
-      let locationId = response[0]._id
-
-      ReservationModel.create({
-        locationName: locationId, 
-        time: time,
-        date: date,
-        reservationName: reservationName,
-        description: description,
-        user: userId,
-    
-      })
-      .then((response) => {
-        console.log(response, "checking here")
-        res.status(200).json(response)
-      })
-      .catch((err) => {
-        console.log(err)
-        res.status(500).json({
-          error: 'Something went wrong',
-          message: err
+        ReservationModel.create({
+          locationName: locationId, 
+          time: time,
+          date: date,
+          reservationName: reservationName,
+          description: description,
+          user: userId,
+      
         })
-      })
-
-  })
-  // let locationDetails = req.session.
-  // console.log(rew.session.location)
-
-  
+        .then((response) => {
+          console.log(response, "checking here")
+          res.status(200).json(response)
+        })
+        .catch((err) => {
+          console.log(err)
+          res.status(500).json({
+            error: 'Something went wrong',
+            message: err
+          })
+        })
+    })
 })
 
 router.get('/booking/:id', (req, res) => {
@@ -143,11 +114,13 @@ router.delete('/bookinglist/:id', (req,res) => {
     })
 })
 
-router.patch('/reservations/:id', (req, res) => {
+router.patch('/reservation/:id/edit', (req, res) => {
   let id = req.params.id
-  const{locationName, time, date, reservationName, description} = req.body
-  ReservationModel.findByIdAndUpdtate(id, {$set: {locationName:locationName, time:time, date:date, reservationName:reservationName, description:description, completed: completed}})
-      .then((response) => {
+  console.log(id)
+  const{ date, time, reservationName, description} = req.body
+  ReservationModel.findByIdAndUpdate(id, {$set: { time, date, reservationName, description}})
+    .populate("locationName")  
+    .then((response) => {
             res.status(200).json(response)
       })
       .catch((err) => {
