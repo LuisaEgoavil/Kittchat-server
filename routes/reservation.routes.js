@@ -146,8 +146,8 @@ router.delete('/bookinglist/:id', (req,res) => {
 
 router.patch('/profile/:id', (req, res) => {
   let id = req.params.id
-  const{locationName, time, date, reservationName, description} = req.body
-  ReservationModel.findByIdAndUpdtate(id, {$set: {locationName:locationName, time:time, date:date, reservationName:reservationName, description:description, completed: completed}})
+  const{ reservationName, description} = req.body  //locationName, time, date,
+  ReservationModel.findByIdAndUpdate(id, {$set: { reservationName, description}}) //locationName:locationName, time:time, date:date,
       .then((response) => {
             res.status(200).json(response)
       })
