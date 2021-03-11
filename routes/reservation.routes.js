@@ -9,10 +9,10 @@ router.get('/profile' , (req, res) => {
   // if not admin. send onlz reservations from user. code below
 
   let userId = req.session.loggedInUser._id
-  let admin = req.session.loggedInUser._id
+  let admin = req.session.loggedInUser.admin
 
   // does the user have a isOwner: true attribute?. You can check this in req.session.loggedInUser
-if(userId == admin) {
+if(admin) {
   ReservationModel.find()
   .populate("locationName")
   .then((reservations) => {
