@@ -11,8 +11,10 @@ router.get('/profile' , (req, res) => {
   let userId = req.session.loggedInUser._id
   let admin = req.session.loggedInUser._id
 
-if(userId === admin) {
+  // does the user have a isOwner: true attribute?. You can check this in req.session.loggedInUser
+if(userId == admin) {
   ReservationModel.find()
+  .populate("locationName")
   .then((reservations) => {
     res.status(200).json(reservations)
   })
@@ -147,12 +149,13 @@ router.delete('/bookinglist/:id', (req,res) => {
     })
 })
 
-router.patch('/profile/:id', (req, res) => {
+router.patch('/reservation/:id/edit', (req, res) => {
   let id = req.params.id
   console.log(id)
-  const{ locationName, date, time, reservationName, description} = req.body  //locationName, time, date,
-  ReservationModel.findByIdAndUpdate(id, {$set: { locationName, time, date, reservationName, description}}) //locationName:locationName, time:time, date:date,
-      .then((response) => {
+  const{ date, time, reservationName, description} = req.body  //locationName, time, date,
+  ReservationModel.findByIdAndUpdate(id, {$set: { time, date, reservationName, description}}) //locationName:locationName, time:time, date:date,
+    .populate("locationName")  
+    .then((response) => {
             res.status(200).json(response)
       })
       .catch((err) => {
