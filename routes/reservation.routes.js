@@ -4,11 +4,14 @@ const router = express.Router()
 const ReservationModel = require('../models/Reservation.model')
 
 router.get('/profile' , (req, res) => {
+  // check if the user is an admin
+  // if admin. find ALL reservations and send them
+  // if not admin. send onlz reservations from user. code below
 
   let userId = req.session.loggedInUser._id
-  let admin = req.session.loggedInUser._id.admin
+  let admin = req.session.loggedInUser._id
 
-if(userId == admin) {
+if(userId === admin) {
   ReservationModel.find()
   .then((reservations) => {
     res.status(200).json(reservations)
@@ -146,6 +149,7 @@ router.delete('/bookinglist/:id', (req,res) => {
 
 router.patch('/profile/:id', (req, res) => {
   let id = req.params.id
+  console.log(id)
   const{ locationName, date, time, reservationName, description} = req.body  //locationName, time, date,
   ReservationModel.findByIdAndUpdate(id, {$set: { locationName, time, date, reservationName, description}}) //locationName:locationName, time:time, date:date,
       .then((response) => {
