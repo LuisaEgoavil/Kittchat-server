@@ -12,7 +12,7 @@ router.get('/profile' , (req, res) => {
   let admin = req.session.loggedInUser._id
 
   // does the user have a isOwner: true attribute?. You can check this in req.session.loggedInUser
-if(userId == admin) {
+if(admin == true && admin.isOwner) {
   ReservationModel.find()
   .populate("locationName")
   .then((reservations) => {
